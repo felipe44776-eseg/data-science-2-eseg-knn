@@ -40,16 +40,13 @@ body {
 }
 button, select { font: inherit; color: inherit; }
 .app {
-  height: 100dvh; max-width: 1720px; margin: 0 auto; padding: 14px 18px;
-  display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; gap: 12px;
+  --alto: calc(100dvh - 90px); /* altura da janela menos margens e barra de controles */
+  min-height: 100dvh; max-width: 1720px; margin: 0 auto; padding: 14px 18px;
+  display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 12px;
 }
 .cartao { background: var(--superficie); border: 1px solid var(--borda); border-radius: 10px; }
 .rotulo { font-size: 11.5px; color: var(--tinta-3); letter-spacing: .02em; margin: 0 0 6px; font-weight: 500; }
 
-header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
-header h1 { font-size: 17px; font-weight: 650; margin: 0; }
-header p { margin: 0; color: var(--tinta-2); font-size: 13px; }
-header .acoes { margin-left: auto; display: flex; gap: 8px; }
 .btn {
   background: var(--superficie); border: 1px solid var(--borda); border-radius: 7px;
   padding: 5px 11px; cursor: pointer; font-size: 13px;
@@ -57,10 +54,17 @@ header .acoes { margin-left: auto; display: flex; gap: 8px; }
 .btn:hover { background: var(--codigo); }
 .btn:focus-visible, .trilho:focus-visible, select:focus-visible { outline: 2px solid var(--homem); outline-offset: 2px; }
 
-main { display: grid; grid-template-columns: minmax(0, 1fr) clamp(380px, 29vw, 460px); gap: 14px; min-height: 0; }
+main { display: grid; grid-template-columns: minmax(0, 1fr) clamp(400px, 42vw, 680px); gap: 14px; align-items: start; }
 
-.palco { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding: 14px 16px 10px; min-height: 0; }
+.palco {
+  position: sticky; top: 14px; height: var(--alto); min-height: 380px;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding: 12px 16px 10px;
+}
+.narracao .topo { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 2px 18px; }
 .narracao .etapa { font-size: 12px; color: var(--tinta-3); }
+.narracao h1 { display: inline; font-size: 12px; font-weight: 650; color: var(--tinta); margin: 0 8px 0 0; }
+.base { display: flex; flex-wrap: wrap; gap: 2px 16px; font-size: 12px; color: var(--tinta-3); }
+.base b { color: var(--tinta); font-weight: 600; font-size: 13px; margin-left: 5px; font-variant-numeric: tabular-nums; }
 .narracao h2 { font-size: 20px; font-weight: 650; margin: 1px 0 4px; }
 .narracao p { margin: 0; color: var(--tinta-2); font-size: 14.5px; min-height: 4.4em; max-width: 112ch; }
 .tela { position: relative; min-height: 0; }
@@ -78,23 +82,24 @@ main { display: grid; grid-template-columns: minmax(0, 1fr) clamp(380px, 29vw, 4
 .sw.x::after { transform: rotate(-45deg); }
 .sw.reg { border-radius: 2px; width: 18px; background: linear-gradient(90deg, color-mix(in srgb, var(--mulher) 28%, var(--superficie)) 50%, color-mix(in srgb, var(--homem) 28%, var(--superficie)) 50%); }
 
-.painel { display: grid; grid-template-rows: auto auto minmax(170px, 1fr) auto; gap: 12px; min-height: 0; overflow-y: auto; }
+/* o grafico vem primeiro e nunca fica menor que 340px; em janela baixa o codigo desce e a pagina rola */
+.painel { display: grid; grid-template-rows: minmax(340px, 1fr) auto auto; gap: 12px; min-height: var(--alto); }
 .painel > .cartao { padding: 11px 13px; min-width: 0; }
 pre#codigo {
-  margin: 0; padding: 8px 11px; background: var(--codigo); border-radius: 7px; height: 160px; overflow: auto;
+  margin: 0; padding: 8px 11px; background: var(--codigo); border-radius: 7px; height: calc(var(--linhas, 9) * 16px + 16px); transition: height .45s ease; overflow: auto;
   font: 12px/16px ui-monospace, "Cascadia Code", Consolas, "SF Mono", monospace; white-space: pre; tab-size: 4;
 }
 pre#codigo .com { color: var(--tinta-3); }
 pre#codigo .out { color: var(--tinta-2); font-weight: 600; }
 
-.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px 12px; }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px 12px; margin: 5px 0 6px; }
 .tile span { display: block; font-size: 11.5px; color: var(--tinta-3); white-space: nowrap; }
-.tile b { font-size: 18px; font-weight: 600; }
+.tile b { font-size: 21px; font-weight: 600; }
 
-.grafico { display: grid; grid-template-rows: auto auto minmax(0, 1fr); }
+.grafico { display: grid; grid-template-rows: auto auto auto minmax(0, 1fr); }
 .grafico .rotulo { margin-bottom: 1px; }
 .grafico .rotulo b { color: var(--tinta); font-weight: 600; font-size: 12.5px; }
-.grafico .chaves { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 12px; color: var(--tinta-2); margin: 3px 0 2px; }
+.grafico .chaves { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 12.5px; color: var(--tinta-2); margin: 3px 0 2px; }
 .chave { display: inline-flex; align-items: center; gap: 6px; }
 .chave[hidden] { display: none; }
 .chave i { width: 16px; height: 2px; border-radius: 1px; background: var(--tinta); display: inline-block; }
@@ -103,29 +108,28 @@ pre#codigo .out { color: var(--tinta-2); font-weight: 600; }
 .chave i.best { width: 11px; height: 11px; border-radius: 50%; background: none; border: 2px solid var(--foco); }
 
 .decisao { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; }
-.fichas { display: flex; flex-wrap: wrap; gap: 2px; min-height: 20px; align-content: flex-start; }
-.fichas i { width: 9px; height: 9px; border-radius: 2px; display: block; }
+.fichas { display: flex; flex-wrap: wrap; gap: 3px; min-height: 29px; align-content: flex-start; }
+.fichas i { width: 13px; height: 13px; border-radius: 3px; display: block; }
 .fichas i.m { background: var(--mulher); } .fichas i.h { background: var(--homem); }
-.contagem { font-size: 12.5px; color: var(--tinta-2); margin-top: 5px; min-height: 2.9em; }
+.contagem { font-size: 13.5px; color: var(--tinta-2); margin-top: 6px; min-height: 2.9em; }
+.contagem b { font-size: 15px; }
 .contagem b { color: var(--tinta); font-weight: 600; }
-table.matriz { border-collapse: collapse; font-size: 12.5px; }
+table.matriz { border-collapse: collapse; font-size: 13px; }
 table.matriz th { font-weight: 400; color: var(--tinta-3); text-align: right; padding: 2px 6px; white-space: nowrap; }
 table.matriz th.lin { text-align: left; padding-left: 0; }
-table.matriz td { text-align: right; padding: 3px 6px; font-variant-numeric: tabular-nums; color: var(--tinta-2); }
+table.matriz td { text-align: right; padding: 3px 8px; font-size: 16px; font-variant-numeric: tabular-nums; color: var(--tinta-2); }
 table.matriz td.ok { color: var(--tinta); font-weight: 650; }
 
-.controles { padding: 9px 14px 10px; }
-.trilho { display: flex; gap: 3px; height: 20px; align-items: center; cursor: pointer; touch-action: none; border-radius: 4px; }
+
+.controles { position: sticky; bottom: 14px; z-index: 5; padding: 9px 12px; display: flex; align-items: center; gap: 8px; }
+.trilho { flex: 1 1 200px; display: flex; gap: 3px; height: 30px; margin: 0 6px; align-items: center; cursor: pointer; touch-action: none; border-radius: 4px; }
 .seg { height: 6px; border-radius: 3px; background: var(--grade); position: relative; overflow: hidden; min-width: 4px; }
 .seg i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--tinta); }
 .seg.atual { height: 8px; }
-.barra { display: flex; align-items: center; gap: 8px; margin-top: 5px; flex-wrap: wrap; }
-.barra .btn { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; height: 30px; padding: 0 8px; }
-.barra .btn svg { width: 16px; height: 16px; fill: currentColor; display: block; }
-.barra .tempo { font-variant-numeric: tabular-nums; color: var(--tinta-2); font-size: 13px; min-width: 86px; }
-.barra select { background: var(--superficie); border: 1px solid var(--borda); border-radius: 7px; height: 30px; padding: 0 6px; }
-.barra .nota { margin-left: auto; color: var(--tinta-3); font-size: 12px; text-align: right; }
-.barra kbd { font: 11px ui-monospace, Consolas, monospace; border: 1px solid var(--borda); border-radius: 4px; padding: 0 4px; }
+.controles .btn { display: inline-flex; align-items: center; justify-content: center; flex: none; min-width: 34px; height: 30px; padding: 0 9px; }
+.controles .btn svg { width: 16px; height: 16px; fill: currentColor; display: block; }
+.controles .tempo { font-variant-numeric: tabular-nums; color: var(--tinta-2); font-size: 13px; white-space: nowrap; }
+.controles select { background: var(--superficie); border: 1px solid var(--borda); border-radius: 7px; height: 30px; padding: 0 6px; }
 
 #dica {
   position: fixed; z-index: 10; pointer-events: none; display: none; max-width: 280px;
@@ -141,6 +145,7 @@ dialog::backdrop { background: rgba(0,0,0,.4); }
 dialog .dlg-topo { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 4px; }
 dialog h3 { margin: 0; font-size: 16px; }
 dialog p { margin: 0 0 12px; color: var(--tinta-2); font-size: 13px; }
+dialog #nota { margin: 0; color: var(--tinta-3); font-size: 12px; }
 dialog table { border-collapse: collapse; font-size: 12.5px; width: 100%; margin-bottom: 16px; }
 dialog th, dialog td { padding: 3px 9px; text-align: right; border-bottom: 1px solid var(--grade); font-variant-numeric: tabular-nums; white-space: nowrap; }
 dialog th { color: var(--tinta-2); font-weight: 600; }
@@ -149,32 +154,37 @@ dialog th[colspan] { text-align: center; }
 
 #aviso { display: none; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--borda); background: var(--codigo); margin: 14px 18px; }
 
+@media (max-height: 720px) and (min-width: 981px) {
+  .narracao h2 { font-size: 18px; margin-bottom: 2px; }
+  .narracao p { font-size: 13.5px; min-height: 2.9em; }
+  .legenda { font-size: 12px; gap: 2px 12px; padding-top: 6px; }
+}
 @media (max-width: 980px) {
-  .app { height: auto; padding: 12px 16px; }
+  .app { padding: 12px 16px; }
   main { grid-template-columns: minmax(0, 1fr); }
+  .palco { position: static; height: auto; min-height: 0; }
   .palco .tela { aspect-ratio: 4 / 3; }
-  .painel { overflow: visible; grid-template-rows: auto auto 240px auto; }
-  .controles { position: sticky; bottom: 8px; }
-  .barra .nota { display: none; }
+  .painel { min-height: 0; grid-template-rows: 400px auto auto; }
+  .controles { bottom: 8px; flex-wrap: wrap; }
+  .trilho { order: -1; flex-basis: 100%; margin: 0; height: 22px; }
+  #btn-tema { display: none; } /* no celular o tema segue o sistema; assim os controles cabem em uma linha */
 }
 </style>
 </head>
 <body>
 <div id="aviso"></div>
 <div class="app" id="app">
-  <header>
-    <h1>KNN passo a passo</h1>
-    <p>Howell1.csv: do arquivo à decisão, com os números calculados pelo notebook</p>
-    <div class="acoes">
-      <button class="btn" id="btn-tabela" type="button">Ver em tabela</button>
-      <button class="btn" id="btn-tema" type="button">Tema</button>
-    </div>
-  </header>
-
   <main>
     <section class="palco cartao">
       <div class="narracao">
-        <div class="etapa" id="etapa"></div>
+        <div class="topo">
+          <div class="etapa"><h1>KNN passo a passo</h1><span id="etapa"></span></div>
+          <div class="base">
+            <span>Linhas<b id="t-linhas">–</b></span>
+            <span>Mulheres · homens<b id="t-sexo">–</b></span>
+            <span>Treino · teste<b id="t-split">–</b></span>
+          </div>
+        </div>
         <h2 id="titulo"></h2>
         <p id="texto"></p>
       </div>
@@ -191,20 +201,13 @@ dialog th[colspan] { text-align: center; }
     </section>
 
     <aside class="painel">
-      <div class="cartao">
-        <p class="rotulo">Código do notebook</p>
-        <pre id="codigo"></pre>
-      </div>
-      <div class="cartao tiles">
-        <div class="tile"><span>Linhas</span><b id="t-linhas">–</b></div>
-        <div class="tile"><span>Mulheres · homens</span><b id="t-sexo">–</b></div>
-        <div class="tile"><span>Treino · teste</span><b id="t-split">–</b></div>
-        <div class="tile"><span>Vizinhos (k)</span><b id="t-k">–</b></div>
-        <div class="tile"><span>Acurácia no treino</span><b id="t-atr">–</b></div>
-        <div class="tile"><span>Acurácia no teste</span><b id="t-ate">–</b></div>
-      </div>
       <div class="cartao grafico">
         <p class="rotulo">Acurácia por número de vizinhos: <b id="g-sub">–</b></p>
+        <div class="tiles">
+          <div class="tile"><span>Vizinhos (k)</span><b id="t-k">–</b></div>
+          <div class="tile"><span>Acurácia no treino</span><b id="t-atr">–</b></div>
+          <div class="tile"><span>Acurácia no teste</span><b id="t-ate">–</b></div>
+        </div>
         <div class="chaves">
           <span class="chave"><i></i>teste</span>
           <span class="chave"><i class="tr"></i>treino</span>
@@ -229,26 +232,29 @@ dialog th[colspan] { text-align: center; }
           </table>
         </div>
       </div>
+      <div class="cartao">
+        <p class="rotulo">Código do notebook</p>
+        <pre id="codigo"></pre>
+      </div>
     </aside>
   </main>
 
   <footer class="controles cartao">
+    <button class="btn" id="btn-ant" type="button" aria-label="Etapa anterior" title="Etapa anterior (←)"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zM9.5 12 18 18V6z"/></svg></button>
+    <button class="btn" id="btn-toca" type="button" aria-label="Reproduzir" title="Reproduzir ou pausar (espaço)"><svg viewBox="0 0 24 24"><path id="ico-toca" d="M8 5v14l11-7z"/></svg></button>
+    <button class="btn" id="btn-prox" type="button" aria-label="Próxima etapa" title="Próxima etapa (→)"><svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button>
     <div class="trilho" id="trilho" role="slider" tabindex="0" aria-label="Linha do tempo da animação" aria-valuemin="0"></div>
-    <div class="barra">
-      <button class="btn" id="btn-ant" type="button" aria-label="Etapa anterior" title="Etapa anterior (←)"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zM9.5 12 18 18V6z"/></svg></button>
-      <button class="btn" id="btn-toca" type="button" aria-label="Reproduzir" title="Reproduzir ou pausar (espaço)"><svg viewBox="0 0 24 24"><path id="ico-toca" d="M8 5v14l11-7z"/></svg></button>
-      <button class="btn" id="btn-prox" type="button" aria-label="Próxima etapa" title="Próxima etapa (→)"><svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button>
-      <span class="tempo" id="tempo">0:00</span>
-      <select id="vel" aria-label="Velocidade">
-        <option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option>
-      </select>
-      <span class="nota" id="nota"></span>
-    </div>
+    <span class="tempo" id="tempo">0:00</span>
+    <select id="vel" aria-label="Velocidade">
+      <option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option>
+    </select>
+    <button class="btn" id="btn-tabela" type="button">Tabela</button>
+    <button class="btn" id="btn-tema" type="button">Tema</button>
   </footer>
 </div>
 
 <div id="dica" role="status"></div>
-<dialog id="dlg"><div class="dlg-topo"><h3>Acurácia por k, nos três experimentos</h3><button class="btn" id="dlg-fecha" type="button">Fechar</button></div><p id="dlg-p"></p><div id="dlg-corpo"></div></dialog>
+<dialog id="dlg"><div class="dlg-topo"><h3>Acurácia por k, nos três experimentos</h3><button class="btn" id="dlg-fecha" type="button">Fechar</button></div><p id="dlg-p"></p><div id="dlg-corpo"></div><p id="nota"></p></dialog>
 
 <script>
 'use strict';
@@ -669,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.globalAlpha = 1;
   }
 
-  function desenhaFoco(ctx, V, f) {
+  function desenhaFoco(ctx, V, f, fe) {
     if (f.alpha < 0.02) return;
     const e = EXP[f.exp], A = e.viz_x[f.kA - 1], B = e.viz_x[f.kB - 1];
     const r = lerp(e.raio_x[f.kA - 1], e.raio_x[f.kB - 1], f.mix), [mx, my] = METRICA[f.exp];
@@ -693,7 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y); ctx.stroke();
       }
       ctx.globalAlpha = f.alpha * w; ctx.lineWidth = 2; ctx.strokeStyle = cor(C.foco);
-      ctx.beginPath(); ctx.arc(x, y, 6, 0, TAU); ctx.stroke();
+      ctx.beginPath(); ctx.arc(x, y, 6 * fe, 0, TAU); ctx.stroke();
     }
     ctx.globalAlpha = 1;
   }
@@ -733,7 +739,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.beginPath(); ctx.rect(P.l, P.t, P.r - P.l, P.b - P.t); ctx.clip();
 
     const carga = L('carga'), filtro = L('filtro'), divide = L('split');
-    const rBase = lerp(3, 4, S.zoom);
+    const fe = clamp(Math.abs(ajusta(CAIXA.adultos, 1, 1, true).ay) / 13.5, 0.62, 1.2); // tamanho das marcas conforme a escala
+    const rBase = lerp(3, 4, S.zoom) * fe;
     const corDe = id => mistura(C['tinta-3'], C.classe[HOMEM[id]], S.sexo);
     const surge = id => suave(clamp((carga - (0.06 + 0.62 * id / N)) / 0.1));
 
@@ -749,10 +756,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const a = surge(id);
       if (a < 0.01) continue;
       const x = sx(id), y = sy(id);
-      bola(ctx, x, y, lerp(rBase, 3.5, S.recua) * (0.4 + 0.6 * a), cor(corDe(id)), lerp(0.9, 0.55, S.recua) * a, sup, 1);
+      bola(ctx, x, y, lerp(rBase, 3.5 * fe, S.recua) * (0.4 + 0.6 * a), cor(corDe(id)), lerp(0.9, 0.55, S.recua) * a, sup, 1);
       ALVOS.push({ id, x, y });
     }
-    S.focos.forEach(f => desenhaFoco(ctx, V, f));
+    S.focos.forEach(f => desenhaFoco(ctx, V, f, fe));
 
     // teste: rótulo oculto até o modelo prever
     const pA = m && EXP[m.exp].pred_teste[m.kA - 1], pB = m && EXP[m.exp].pred_teste[m.kB - 1], pK = m && EXP[m.exp].pred_teste[S.k - 1];
@@ -766,13 +773,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (m) { q = c === 'k1' ? qK1(j) : 2; previsto = m.alpha * (c === 'k1' ? suave(clamp((q - 0.7) / 0.3)) : 1); }
       let fill = mistura(corDe(id), C.superficie, oculto);
       if (previsto > 0) fill = mistura(fill, mistura(C.classe[+pA[j]], C.classe[+pB[j]], m.mix), previsto);
-      const r = lerp(rBase, 5, oculto) * (0.4 + 0.6 * a);
+      const r = lerp(rBase, 5 * fe, oculto) * (0.4 + 0.6 * a);
       bola(ctx, x, y, r, cor(fill), lerp(0.9, 1, oculto) * a, sup, 1.25);
       const anel = oculto * (1 - previsto);
       if (anel > 0.02) { ctx.globalAlpha = anel; ctx.lineWidth = 1.5; ctx.strokeStyle = cor(C['tinta-3']); ctx.beginPath(); ctx.arc(x, y, r - 0.5, 0, TAU); ctx.stroke(); }
       if (previsto > 0.02 && +pK[j] !== HOMEM[id]) {
         ctx.globalAlpha = previsto * erroAlfa; ctx.lineWidth = 1.75; ctx.strokeStyle = cor(C.tinta);
-        ctx.beginPath(); ctx.arc(x, y, r + 2.75, 0, TAU); ctx.stroke();
+        ctx.beginPath(); ctx.arc(x, y, r + 2.75 * fe, 0, TAU); ctx.stroke();
       }
       // K = 1: a busca pelo vizinho mais próximo, ponto a ponto
       if (c === 'k1' && q > 0 && q < 1) {
@@ -784,7 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (liga > 0.02) {
           ctx.globalAlpha = liga; ctx.lineWidth = 2.25;
           ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(vx, vy); ctx.stroke();
-          ctx.beginPath(); ctx.arc(vx, vy, 6.5, 0, TAU); ctx.stroke();
+          ctx.beginPath(); ctx.arc(vx, vy, 6.5 * fe, 0, TAU); ctx.stroke();
         }
       }
       if (c === 'k1' && q > 0 && q < 1.2 && DEMO.includes(j)) demos.push([x, y, DEMO.indexOf(j) + 1]);
@@ -798,14 +805,14 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.strokeStyle = cor(C.foco); ctx.lineWidth = 1.25;
       for (const v of EXP[m.exp].viz_teste[posTeste[hover.id]].slice(0, S.k)) {
         ctx.globalAlpha = 0.8; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(sx(v), sy(v)); ctx.stroke();
-        ctx.beginPath(); ctx.arc(sx(v), sy(v), 6, 0, TAU); ctx.stroke();
+        ctx.beginPath(); ctx.arc(sx(v), sy(v), 6 * fe, 0, TAU); ctx.stroke();
       }
     }
-    if (hover && hover.id >= 0) { ctx.globalAlpha = 1; ctx.lineWidth = 2; ctx.strokeStyle = cor(C.tinta); ctx.beginPath(); ctx.arc(hover.x, hover.y, 8, 0, TAU); ctx.stroke(); }
+    if (hover && hover.id >= 0) { ctx.globalAlpha = 1; ctx.lineWidth = 2; ctx.strokeStyle = cor(C.tinta); ctx.beginPath(); ctx.arc(hover.x, hover.y, 8 * fe, 0, TAU); ctx.stroke(); }
 
     // ponto X
     if (S.ponto > 0.01) {
-      const x = V.ax * PX[0] + V.bx, y = V.ay * PX[1] + V.by, t = 8 * S.ponto;
+      const x = V.ax * PX[0] + V.bx, y = V.ay * PX[1] + V.by, t = 8 * S.ponto * Math.max(0.8, fe);
       if (c === 'ponto') {
         const f = frac(T * 0.7);
         ctx.globalAlpha = (1 - f) * 0.7 * S.ponto; ctx.lineWidth = 2; ctx.strokeStyle = cor(C.foco);
@@ -832,18 +839,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const { ctx, w, h } = curva;
     if (!w) return;
     ctx.clearRect(0, 0, w, h);
-    const g = { l: 40, r: 16, t: 18, b: 34 };
+    const g = { l: 46, r: 18, t: 24, b: 40 };
     const X = k => g.l + (k - 1) / (KMAX - 1) * (w - g.l - g.r), Y = a => g.t + (1 - a) / (1 - YMIN) * (h - g.t - g.b);
     curva.X = X; curva.g = g;
-    ctx.font = fonte(11); ctx.lineWidth = 1;
+    ctx.font = fonte(12); ctx.lineWidth = 1;
     for (let a = YMIN; a <= 1.0001; a += 0.05) {
       const y = Math.round(Y(a)) + 0.5;
       ctx.strokeStyle = cor(C.grade); ctx.beginPath(); ctx.moveTo(g.l, y); ctx.lineTo(w - g.r, y); ctx.stroke();
       ctx.fillStyle = cor(C['tinta-3']); ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillText(Math.round(a * 100) + '%', g.l - 7, y);
     }
     ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-    for (const k of [1, 5, 10, 15, 20, 25, 30].filter(k => k <= KMAX)) ctx.fillText(String(k), X(k), h - g.b + 6);
-    ctx.fillStyle = cor(C['tinta-2']); ctx.fillText('Número de vizinhos (k)', (g.l + w - g.r) / 2, h - 15);
+    for (const k of [1, 5, 10, 15, 20, 25, 30].filter(k => k <= KMAX)) ctx.fillText(String(k), X(k), h - g.b + 7);
+    ctx.fillStyle = cor(C['tinta-2']); ctx.fillText('Número de vizinhos (k)', (g.l + w - g.r) / 2, h - 16);
     ctx.strokeStyle = cor(C.eixo); ctx.beginPath(); ctx.moveTo(g.l, Math.round(Y(YMIN)) + 0.5); ctx.lineTo(w - g.r, Math.round(Y(YMIN)) + 0.5); ctx.stroke();
 
     const linha = (vals, ate, estilo, larg, alpha) => {
@@ -856,15 +863,15 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.stroke(); ctx.globalAlpha = 1;
     };
     const rotulo = (txt, x, y, acima) => {
-      ctx.font = fonte(11.5, 600);
+      ctx.font = fonte(13, 600);
       const lw = ctx.measureText(txt).width;
-      x = clamp(x - lw / 2, g.l + 2, w - g.r - lw - 2); y = acima ? y - 12 : y + 12;
+      x = clamp(x - lw / 2, g.l + 2, w - g.r - lw - 2); y = acima ? y - 14 : y + 14;
       ctx.textAlign = 'left'; ctx.textBaseline = acima ? 'alphabetic' : 'top';
       ctx.lineWidth = 4; ctx.lineJoin = 'round'; ctx.strokeStyle = cor(C.superficie); ctx.strokeText(txt, x, y);
       ctx.fillStyle = cor(C.tinta); ctx.fillText(txt, x, y);
     };
 
-    for (const c of S.curvas) linha(EXP[c.exp].acu_teste, c.ate, cor(C.eixo), 1.75, c.fantasma);
+    for (const c of S.curvas) linha(EXP[c.exp].acu_teste, c.ate, cor(C.eixo), 2, c.fantasma);
     for (const c of S.curvas) {
       const e = EXP[c.exp];
       linha(e.acu_treino, c.ate, cor(C['tinta-3']), 2, c.principal);
@@ -873,12 +880,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const noMelhor = c.melhor > 0.5, kM = e.melhor_k;
       if (c.melhor > 0.02) {
         ctx.globalAlpha = c.melhor * c.principal; ctx.strokeStyle = cor(C.foco); ctx.lineWidth = 2.25;
-        ctx.beginPath(); ctx.arc(X(kM), Y(e.acu_teste[kM - 1]), 9, 0, TAU); ctx.stroke(); ctx.globalAlpha = 1;
+        ctx.beginPath(); ctx.arc(X(kM), Y(e.acu_teste[kM - 1]), 10.5, 0, TAU); ctx.stroke(); ctx.globalAlpha = 1;
       }
       if (S.m && S.m.exp === c.exp && S.aval > 0.02) {
         const k = S.k, a = Math.min(1, c.ate) * c.principal;
-        bola(ctx, X(k), Y(e.acu_treino[k - 1]), 3.5, cor(C['tinta-3']), a, cor(C.superficie), 1.5);
-        bola(ctx, X(k), Y(e.acu_teste[k - 1]), 4.5, cor(C.tinta), a, cor(C.superficie), 2);
+        bola(ctx, X(k), Y(e.acu_treino[k - 1]), 4, cor(C['tinta-3']), a, cor(C.superficie), 1.5);
+        bola(ctx, X(k), Y(e.acu_teste[k - 1]), 5.5, cor(C.tinta), a, cor(C.superficie), 2);
         ctx.globalAlpha = a;
         if (noMelhor && k === kM) rotulo(`melhor: k = ${k} · ${pct(e.acu_teste[k - 1])}`, X(k), Y(e.acu_teste[k - 1]) - 4, true);
         else rotulo(pct(e.acu_teste[k - 1]), X(k), Y(e.acu_teste[k - 1]), e.acu_teste[k - 1] >= e.acu_treino[k - 1]);
@@ -920,6 +927,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return s;
       }));
     }
+
+    const nLinhas = c.id === 'final' ? linhas.length : 9;
+    if (memo.get('nLinhas') !== nLinhas) { memo.set('nLinhas', nLinhas); $('codigo').style.setProperty('--linhas', nLinhas); }
 
     const cg = clamp((L('carga') - 0.06) / 0.72), ft = clamp((L('filtro') - 0.15) / 0.35);
     poe('t-linhas', String(S.i === 0 ? Math.round(cg * N) : N - Math.round(ft * FORA.length)));
