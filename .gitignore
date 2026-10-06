@@ -1,3 +1,5 @@
 *.original.ipynb
 .ipynb_checkpoints/
 __pycache__/
+node_modules/
+tests/fotos/

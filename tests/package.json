@@ -1,0 +1,11 @@
+{
+  "name": "knn-animacao-testes",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node fumaca.mjs"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.12.0"
+  }
+}
